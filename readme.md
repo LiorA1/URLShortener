@@ -2,7 +2,7 @@
 Pcentra Backend Developer Exercise
 ===================================
 
-This is a Django project that implement a URL Shortener with hit count for each short link.
+This is a Django project that implement a URL Shortener with hit count for each shorten link.
 
 Short URL -
 -----------

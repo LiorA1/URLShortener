@@ -1,5 +1,6 @@
 from django.db import models
 import base64
+from django.db import transaction
 
 # Create your models here.
 
@@ -34,6 +35,8 @@ class UrlMapper(models.Model):
 
     hits = models.PositiveBigIntegerField(default=0)
 
+
+    @transaction.atomic
     def increase_hits(self):
         self.hits += 1
         self.save()

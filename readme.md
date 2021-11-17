@@ -37,3 +37,11 @@ There are 3 tests for the CreateViewShortener:
 There are 2 tests for the RedirectViewUrlTest:
 1. test_redirect_url - Test the correct redirect process, using a valid short path.
 2. test_redirect_non_existing_url - Test the process of an invalid short path as input.
+
+
+Additional modifications -
+--------------------------
+1. Make "increase_hits" Atomic Block (using @transaction.atomic)
+2. Change RedirectViewUrl.permanent attribute to True, so the browser will cache the address.
+   Only the initial request will reach the server.
+   Any subsequent request will be handled by the browser. 

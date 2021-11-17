@@ -1,5 +1,5 @@
 
-from datetime import datetime, timedelta
+
 from django.shortcuts import get_object_or_404
 from django.views.generic import RedirectView
 from rest_framework.response import Response
@@ -25,12 +25,13 @@ class CreateViewShortener(CreateAPIView):
         redirect_path = reverse("urlshorten:url_redirect", args={self.obj.short_path_creation})
 
         return Response({
-            'status': 201,
+            'status_code': 201,
             'short_url': request.build_absolute_uri(redirect_path)
         })
 
 
 class RedirectViewUrl(RedirectView):
+    permanent = True
 
     def get_redirect_url(self, *args, **kwargs):
         """
@@ -40,17 +41,7 @@ class RedirectViewUrl(RedirectView):
 
         url_mapper = get_object_or_404(UrlMapper, short_path=kwargs['pk'])
 
-        # For each session and short url item - store a "last_visitied" value (in str).
-        # If the current session visited the specific url in the last 24 hr - it will not increase the object hits counter.
-        datetime_now = datetime.now()
-        last_visited_key = f"last_visited_{kwargs['pk']}"
-        last_visited_str = self.request.session.get(last_visited_key, None)
-        last_visited_datetime = None if last_visited_str is None else datetime.fromisoformat(last_visited_str)
-
-        if last_visited_datetime is None or (last_visited_datetime < datetime_now - timedelta(hours=24)):
-            url_mapper.increase_hits()
-
-        date_time_now_str = datetime.isoformat(datetime_now)
-        self.request.session[last_visited_key] = date_time_now_str
+        url_mapper.increase_hits() 
+        # permanent is True so the browser will cache the redirect.
 
         return url_mapper.url

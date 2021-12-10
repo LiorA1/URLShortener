@@ -3,9 +3,9 @@ from urlshorten.models import UrlMapper
 
 
 class UrlMapperSerializer(serializers.ModelSerializer):
-    short_path_creation = serializers.ReadOnlyField()
+    #short_path = serializers.ReadOnlyField()
 
     class Meta:
         model = UrlMapper
-        fields = ['id', 'url', 'short_path_creation', 'hits']
-        read_only_fields = ['id', 'short_path_creation', 'hits']
+        fields = ['id', 'url', 'short_path', 'hits']
+        read_only_fields = ['id', 'short_path', 'hits']

@@ -5,6 +5,7 @@ from django.views.generic import RedirectView
 from rest_framework.response import Response
 from django.urls import reverse
 from urlshorten.models import UrlMapper
+from django.db.models import F
 # Create your views here.
 from rest_framework.generics import CreateAPIView
 
@@ -22,7 +23,7 @@ class CreateViewShortener(CreateAPIView):
         # Handle the un-successful responses.
         response = super().create(request, *args, **kwargs)
 
-        redirect_path = reverse("urlshorten:url_redirect", args={self.obj.short_path_creation})
+        redirect_path = reverse("urlshorten:url_redirect", args={self.obj.short_path})
 
         return Response({
             'status_code': 201,
@@ -39,9 +40,8 @@ class RedirectViewUrl(RedirectView):
         It also manage the hits counter, because the redirect-url, returned by it.
         """
 
+        url_mapper = UrlMapper.objects.filter(short_path=kwargs['pk']).update(hits=F('hits')+1)
         url_mapper = get_object_or_404(UrlMapper, short_path=kwargs['pk'])
-
-        url_mapper.increase_hits() 
         # permanent is True so the browser will cache the redirect.
 
         return url_mapper.url

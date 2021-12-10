@@ -67,6 +67,7 @@ class RedirectViewUrlTest(TestCase):
 
     def setUp(self) -> None:
         self.client = Client()
+        self.obj = UrlMapper.objects.create(**self.i_valid_data)
 
         return super().setUp()
 
@@ -75,15 +76,37 @@ class RedirectViewUrlTest(TestCase):
         Test the correct redirect process, using a valid short path.
         """
 
-        obj = UrlMapper.objects.create(**self.i_valid_data)
-
-        redirect_url = reverse("urlshorten:url_redirect", args={obj.short_path_creation})
+        redirect_url = reverse("urlshorten:url_redirect", args={self.obj.short_path})
         response_of_get = self.client.get(redirect_url[:-1])
-        self.assertRedirects(response_of_get, response_of_get.url, 301, 302)
+        self.assertRedirects(response_of_get, response_of_get.url, 301, 301)
 
         response_of_get = self.client.get(response_of_get.url)
-        self.assertRedirects(response_of_get, response_of_get.url, 302, 200, fetch_redirect_response=False)
+        self.assertRedirects(response_of_get, response_of_get.url, 301, 200, fetch_redirect_response=False)
         self.assertEquals(self.valid_mapper_url, response_of_get.url)
+
+    def test_increment_counter(self):
+        """
+        Test increment only once
+        """
+
+        redirect_url = reverse("urlshorten:url_redirect", args={self.obj.short_path})
+        response_of_get = self.client.get(redirect_url[:-1])
+        self.assertRedirects(response_of_get, response_of_get.url, 301, 301)
+
+        self.obj.refresh_from_db()
+        print(f'test_increment_counter: {self.obj.hits}')
+
+        response_of_get = self.client.get(response_of_get.url)
+        self.assertRedirects(response_of_get, response_of_get.url, 301, 200, fetch_redirect_response=False)
+        self.assertEquals(self.valid_mapper_url, response_of_get.url)
+
+        self.obj.refresh_from_db()
+        print(f'test_increment_counter: {self.obj.hits}')
+
+        response_of_get = self.client.get(redirect_url[:-1], follow=True)
+
+        self.obj.refresh_from_db()
+        print(f'test_increment_counter: {self.obj.hits}')
 
     def test_redirect_non_existing_url(self):
         """

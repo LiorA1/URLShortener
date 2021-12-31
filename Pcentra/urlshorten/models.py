@@ -11,7 +11,7 @@ class UrlMapper(models.Model):
 
     def _generate_rand_str():
         len_of_str = 5
-        res_str = "token_urlsafe(len_of_str)12"
+        res_str = token_urlsafe(len_of_str)
         return res_str
 
     short_path = models.CharField(default=_generate_rand_str, max_length=6, unique=True)

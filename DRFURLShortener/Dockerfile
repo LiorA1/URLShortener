@@ -4,13 +4,13 @@ FROM python:3.8-slim-buster
 
 ENV PYTHONUNBUFFERED=True
 
-WORKDIR /code_pcentra
+WORKDIR /code_urlshortener
 
-COPY requirements.txt /code_pcentra/
+COPY requirements.txt /code_urlshortener/
 
 RUN pip install -r requirements.txt
 
 RUN apt-get -y upgrade
 
 
-COPY . /code_pcentra/
+COPY . /code_urlshortener/

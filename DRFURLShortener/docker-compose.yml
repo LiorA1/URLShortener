@@ -4,11 +4,11 @@ services:
     app:
         build: .
         volumes:
-            - .:/code_pcentra
+            - .:/code_urlshortener
         ports:
             - "8000:8000"
-        image: django_pcentra:django
-        container_name: django_pcentra_container
+        image: django_urlshortener:django
+        container_name: django_urlshortener_container
         command: >
             sh -c "python manage.py makemigrations &&
               python manage.py migrate &&

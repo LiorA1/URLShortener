@@ -7,9 +7,9 @@ This is a Django project that implement a URL Shortener with hit count for each 
 Short URL -
 -----------
 
-The Short Url is saved as 6 characters of Base64.
+The Short Url is saved as 6 characters of Base64, using *secrets.token_urlsafe'* method.
 It stored in the "short_path" `CharField` field in the URLMapper Model.
-"short_path" identifier is a Base64 representation of the URLMapper id, hence its unique.
+"short_path" field enforce unique=True, hence it maintain unique property.
 "short_path" currently limited to 6 characters, that ensure 64^6 unique identifiers.
 Notice: 64^6 = 6.87 x 10 ^ 10 unique identifiers.
 
@@ -20,6 +20,9 @@ When it will not be enough, two main options to solve it are:
 
 Hit Count logic -
 ------------------
+Update:
+Is made by calling: *'UrlMapper.objects.filter(short_path=kwargs['pk']).update(hits=F('hits')+1)'*, from the RedirectViewUrl.get_redirect_url.
+
 Exists in the URLMapper model as PositiveBigIntegerField field named "hits".
 Increment by 1, by calling URLMapper.increase_hits from the RedirectViewUrl view.
 Each session has limitation on the counter increment for a specific URLMapper, that enforce only one increment in 24 hours.

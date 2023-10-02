@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-w7hr1n&2&i_pr22048t!tur&qrp!lel0ha+gd(t5)=hpbawu5y')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['localhost']
 
@@ -58,7 +58,9 @@ ROOT_URLCONF = 'DRFURLShortener.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'react/build'), # add the react templates path
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -127,3 +129,11 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Adds the react build static directory
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'react/build/static'),
+]
+
+APPEND_SLASH=False

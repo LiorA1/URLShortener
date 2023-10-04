@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/static/css/main.c7a2d1a0.css",
+    "main.js": "/static/js/main.c2a7131e.js",
+    "static/media/abstractcubes.png": "/static/media/abstractcubes.0c9964c7a6ff96590534.png",
+    "static/media/react.svg": "/static/media/react.6d4dd5dfc6163bdfcfe520bd6bef1a6a.svg",
+    "static/media/readme.md": "/static/media/readme.5f94d356e357be12fe74.md",
+    "static/media/vite.svg": "/static/media/vite.86cd94ee28a26d6789506af66921f564.svg",
+    "index.html": "/index.html",
+    "main.c7a2d1a0.css.map": "/static/css/main.c7a2d1a0.css.map",
+    "main.c2a7131e.js.map": "/static/js/main.c2a7131e.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.c7a2d1a0.css",
+    "static/js/main.c2a7131e.js"
+  ]
+}

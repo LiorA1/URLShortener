@@ -2,7 +2,6 @@ from django.contrib import admin
 
 # Register your models here.
 
-from .models import UrlMapper, UrlMapper2
+from .models import UrlMapper
 
 admin.site.register(UrlMapper)
-admin.site.register(UrlMapper2)

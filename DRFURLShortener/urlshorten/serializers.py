@@ -1,7 +1,6 @@
 from rest_framework import serializers
-from urlshorten.models import UrlMapper, UrlMapper2
+from urlshorten.models import UrlMapper
 from django.db import IntegrityError
-
 
 
 class UrlMapperSerializer(serializers.ModelSerializer):
@@ -9,15 +8,6 @@ class UrlMapperSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UrlMapper
-        fields = ["id", "url", "short_path", "hits"]
-        read_only_fields = ["id", "short_path", "hits"]
-
-
-class UrlMapperSerializer2(serializers.ModelSerializer):
-    # short_path = serializers.ReadOnlyField()
-
-    class Meta:
-        model = UrlMapper2
         fields = ["id", "url", "short_path", "hits"]
         read_only_fields = ["id", "hits"]
 
@@ -33,10 +23,11 @@ class UrlMapperSerializer2(serializers.ModelSerializer):
 #     "url": "https://www.geeksforgeeks.org/turn-off-the-rightmost-set-bit/2/"
 # }
 
+
 class UrlMapperSerializerRead(serializers.ModelSerializer):
     # short_path = serializers.ReadOnlyField()
 
     class Meta:
-        model = UrlMapper2
+        model = UrlMapper
         fields = ["url", "hits"]
         read_only_fields = ["url", "hits"]

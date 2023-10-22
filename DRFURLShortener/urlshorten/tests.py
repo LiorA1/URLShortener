@@ -144,11 +144,11 @@ class RedirectViewUrlTest(TestCase):
         Test the process of an invalid short path as input.
         """
 
-        obj = UrlMapper.objects.create(**self.i_valid_data)
-
         # Hard Coded, because we know that it is Base64 and invalid.
-        base_64_of_2 = "Ag=="
+        base_62_str = "Agaf57"
+        
 
-        redirect_url = reverse("urlshorten:url_redirect", args={base_64_of_2})
-        response_of_get = self.client.get(redirect_url[:-1], follow=True)
+        redirect_url = reverse("urlshorten:url_redirect", args={base_62_str})
+        response_of_get = self.client.get(redirect_url, follow=True, format="json")
+
         self.assertEquals(response_of_get.status_code, 404)

@@ -1,5 +1,5 @@
 
-URL Shortener Backend Developer Exercise
+URL Shortener Backend Developer -
 ===================================
 
 This is a Django project that implement a URL Shortener with hit count for each shorten link.

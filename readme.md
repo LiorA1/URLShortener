@@ -7,11 +7,11 @@ This is a Django project that implement a URL Shortener with hit count for each 
 Short URL -
 -----------
 
-The Short Url is saved as 6 characters of Base64, using *secrets.token_urlsafe'* method.
+The Short Url is saved as 6 characters of Base62, using *`_generate_rand_str`* method.
 It stored in the "short_path" `CharField` field in the URLMapper Model.
-"short_path" field enforce unique=True, hence it maintain unique property.
-"short_path" currently limited to 6 characters, that ensure 64^6 unique identifiers.
-Notice: 64^6 = 6.87 x 10 ^ 10 unique identifiers.
+"short_path" field enforce `unique=True`, hence it maintain unique property.
+"short_path" currently limited to 6 characters, that ensure 62^6 unique identifiers.
+Notice: 62^6 = 5.68 x 10 ^ 10 unique identifiers.
 
 When it will not be enough, two main options to solve it are:
 1. reused "short_path" identifiers that wasn't been in use for a long period of time.
@@ -25,17 +25,18 @@ Is made by calling: *'UrlMapper.objects.filter(short_path=kwargs['pk']).update(h
 
 Exists in the URLMapper model as PositiveBigIntegerField field named "hits".
 Increment by 1, by calling URLMapper.increase_hits from the RedirectViewUrl view.
-Each session has limitation on the counter increment for a specific URLMapper, that enforce only one increment in 24 hours.
-The implementation is by using the session dictionary with datetime and located in RedirectViewUrl.get_redirect_url.
+Each hit will create or update the browser cache, and will cause subsequent requests to fullfill by the browser cache.
+Request that will not reach to our view, will not increase the hit counter.
+
 
 Note: Each Session expire after two weeks (default value of SESSION_COOKIE_AGE).
 
 unittest -
 ----------
 There are 3 tests for the CreateViewShortener:
-1. test_createapiview_get_405 - Test the 405 response status code, when calling a GET on the CreateAPIView.
+1. test_createapiview_get_200 - Test the 200 response status code, when calling a GET on the create_url_mapper.
 2. test_createapiview_create_valid_url - Test the creation of a URLMapper and the status code, using valid data.
-3. test_createapiview_create_invalid_url - Test the CreateAPIView, using invalid URL string.
+3. test_createapiview_create_invalid_url - Test the create_url_mapper, using invalid URL string.
 
 There are 2 tests for the RedirectViewUrlTest:
 1. test_redirect_url - Test the correct redirect process, using a valid short path.
@@ -44,7 +45,13 @@ There are 2 tests for the RedirectViewUrlTest:
 
 Additional modifications -
 --------------------------
-1. Make "increase_hits" Atomic Block (using @transaction.atomic)
-2. Change RedirectViewUrl.permanent attribute to True, so the browser will cache the address.
+1. Change RedirectViewUrl.permanent attribute to True, so the browser will cache the address.
    Only the initial request will reach the server.
    Any subsequent request will be handled by the browser. 
+
+
+Future Improvements -
+---------------------
+
+1. To Add User management option. A User should manage its own items and modify them.
+2. Maybe to Add a feature that could collect data about the hits (location, etc) using kafka.

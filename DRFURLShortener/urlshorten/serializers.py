@@ -19,11 +19,6 @@ class UrlMapperSerializer(serializers.ModelSerializer):
         return instance
 
 
-# {
-#     "url": "https://www.geeksforgeeks.org/turn-off-the-rightmost-set-bit/2/"
-# }
-
-
 class UrlMapperSerializerRead(serializers.ModelSerializer):
     # short_path = serializers.ReadOnlyField()
 

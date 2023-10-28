@@ -61,7 +61,7 @@ class RedirectViewUrl(RedirectView):
         return url_mapper.url
 
 
-# TODO: a view that returns a list of the latest 10 urls that was clicked & their click counter.
+# TODO: a view that returns a list of the most 10 urls that was hit & their click counter.
 
 
 class LastUrls(APIView):

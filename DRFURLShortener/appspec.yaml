@@ -1,0 +1,9 @@
+version: 0.0
+Resources: 
+  - TargetService:
+      Type: AWS::ECS:Service
+      Properties:
+        TaskDefinition: "arn:aws:ecs:eu-central-1:086857516027:task-definition/FirstDefinition:1"
+        LoadBalancerInfo:
+          ContainerName: "FirstContainer"
+          ContainerPort: 8000

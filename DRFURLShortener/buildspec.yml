@@ -1,0 +1,26 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws --version
+      # - aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 111111111111.dkr.ecr.eu-central-1.amazonaws.com
+      - aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 086857516027.dkr.ecr.eu-central-1.amazonaws.com
+      # 086857516027.dkr.ecr.eu-central-1.amazonaws.com/my-first-ecr
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - docker build -t my-first-ecr .
+      # - docker build -t my-first-ecr/DRFURLShortener .
+      # - docker tag my-first-ecr:latest 086857516027.dkr.ecr.eu-central-1.amazonaws.com/my-first-ecr:latest
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker images...
+      - docker tag my-first-ecr:latest 086857516027.dkr.ecr.eu-central-1.amazonaws.com/my-first-ecr:latest
+      - docker push 086857516027.dkr.ecr.eu-central-1.amazonaws.com/my-first-ecr:latest
+      - printf '[{"name":"FirstContainer","imageUri":"%s"}]' 086857516027.dkr.ecr.eu-central-1.amazonaws.com/086857516027.dkr.ecr.eu-central-1.amazonaws.com/my-first-ecr:latest > imagedefinitions.json
+artifacts:
+    files: imagedefinitions.json
